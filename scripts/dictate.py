@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.10"
-# dependencies = ["transformers==5.18.0", "torch", "numpy", "sounddevice", "keyboard", "pyperclip", "soxr"]
+# dependencies = ["transformers==5.18.0", "torch", "librosa", "numpy", "sounddevice", "keyboard", "pyperclip", "soxr"]
 # ///
 """دیکته‌ی فارسی در هر برنامه‌ی ویندوز.
 
