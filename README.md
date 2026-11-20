@@ -87,7 +87,40 @@ Re-running only the final recipe in [REPRODUCE.md](REPRODUCE.md) costs less, sin
 ```bash
 uv sync && uv run pytest     # text tooling and tests (no GPU needed)
 ```
+نصب و اجرا
+در PowerShell، uv را نصب کنید:
+powershell
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+فایل را در یک پوشه ذخیره کنید و در همان پوشه اجرا کنید:
+powershell
+uv run dictate.py
 
+بار اول PyTorch و مدل (حدود ۲.۵ گیگ) دانلود می‌شوند. بعد از بارگذاری، اسکریپت چاپ می‌کند که ۳ ثانیه صدا را در چند ثانیه پردازش کرد. این عدد نشان می‌دهد روی سیستم شما چقدر سریع است.
+
+اجرای خودکار با روشن شدن ویندوز: کنار اسکریپت یک فایل dictate.bat بسازید:
+bat
+@echo off
+cd /d %~dp0
+uv run dictate.py
+
+بعد Win+R را بزنید، shell:startup را تایپ کنید، و یک میانبر از این فایل آنجا بگذارید. در Properties میانبر، گزینه‌ی Run را روی Minimized بگذارید.
+
+امتحان گرافیک Intel Arc (اختیاری)
+
+اسکریپت به‌طور پیش‌فرض نسخه‌ی CPU پایتورچ را نصب می‌کند. برای امتحان گرافیک Arc، درایور گرافیک Intel را به‌روز کنید و اجرا کنید:
+
+powershell
+uv run --index https://download.pytorch.org/whl/xpu dictate.py
+
+این را خودم نتوانستم تست کنم. ممکن است بعضی عملیات مدل روی Arc پشتیبانی نشوند. در آن صورت اسکریپت خودش پیغام خطا را نشان می‌دهد و به CPU برمی‌گردد. هر دو حالت را امتحان کنید و عدد زمان پردازش را مقایسه کنید.
+
+چند نکته
+آیکن میکروفون در نوار وظیفه: چون میکروفون همیشه باز است، آیکنش دائم روشن می‌ماند. ولی صدا فقط هنگام نگه‌داشتن کلید پردازش می‌شود و هیچ چیز ذخیره یا ارسال نمی‌شود.
+کلیپ‌بورد: فقط متن قبلی برمی‌گردد. اگر قبل از دیکته تصویری کپی کرده باشید، از دست می‌رود.
+کلید F9 در Outlook کار «ارسال/دریافت» را انجام می‌دهد. اگر Outlook استفاده می‌کنید، --hotkey f8 یا کلید دیگری بدهید.
+برنامه‌های Administrator: اگر بخواهید در برنامه‌ای که با دسترسی Administrator باز شده تایپ کند، اسکریپت هم باید با Administrator اجرا شود.
+قدم بعدی برای سرعت بیشتر: پردازنده‌ی شما Intel است و NPU دارد. مناسب‌ترین مسیر برای سرعت بیشتر، تبدیل مدل به OpenVINO است که مخصوص CPU، گرافیک و NPU اینتل ساخته شده. این کار مثل مسیر GGUF تبدیل مدل لازم دارد و تضمینی برای مدل فارسی نیست. اگر سرعت CPU کافی نبود، سراغش می‌رویم.
+ 
 ## License
 
 The code is under [Apache-2.0](LICENSE). The model weights are under NVIDIA's [OpenMDW-1.1](https://openmdw.ai/license/1-1/), the base model's license (see the model card).
